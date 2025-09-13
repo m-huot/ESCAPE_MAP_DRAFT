@@ -184,3 +184,44 @@ def gen_artif_data(
     print("output shape:", sampled_sequences.shape)
 
     return sampled_sequences
+
+
+def load_escape_map_from_csv(
+    csv_path,
+    rbm=RBM,
+    kd_vectors=KD_VECTORS,
+    ace2_vector=ACE2_KD_VECTOR,
+    default_conc=-18.0,
+):
+    df = pd.read_csv(csv_path)
+    row = df.iloc[0]
+
+    ab_names = list(kd_vectors.keys())
+    raw_concs = []
+    for ab in ab_names:
+        colname = f"raw_c_{ab}"
+        if colname in row and not pd.isna(row[colname]):
+            raw_concs.append(row[colname])
+        else:
+            print(
+                f"Warning: Antibody {ab} concentration not found in CSV; using default {default_conc}."
+            )
+            raw_concs.append(default_conc)
+
+    model = EscapeMap(
+        rbm=rbm,
+        kd_vectors=kd_vectors,
+        ace2_vector=ace2_vector,
+        raw_concentrations=raw_concs,
+        raw_ace2=row["raw_ace2"],
+        raw_beta=row["raw_beta"],
+        total_beta=1.0,
+    )
+    return model
+
+
+def score_seq_batch(model, seqs_np):
+    X = seqs_np
+
+    s = -model(X)  # score = -energy
+    return s

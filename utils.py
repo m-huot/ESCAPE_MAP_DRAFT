@@ -32,11 +32,18 @@ def get_deltaG(seq, kd_vectors):
         seq = seq.reshape(1, -1)  # make 2D
 
     deltaG_values = []
-    for antibody_name, q in kd_vectors.items():
+    try:
+        for antibody_name, q in kd_vectors.items():
+            coeff = np.array(q[:-1], dtype=np.float64)
+            intercept = float(q[-1])
+            deltaG = np.dot(seq, coeff) + intercept  # shape (1,)
+            deltaG_values.append(deltaG.item())
+    except:
+        q = kd_vectors
         coeff = np.array(q[:-1], dtype=np.float64)
         intercept = float(q[-1])
         deltaG = np.dot(seq, coeff) + intercept  # shape (1,)
-        deltaG_values.append(deltaG.item())
+        deltaG_values.append(deltaG)
 
     return np.array(deltaG_values)
 
