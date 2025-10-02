@@ -6,6 +6,14 @@ from sklearn.metrics import roc_auc_score
 from math import ceil
 from utils import get_Kd
 import math
+from global_variables import *
+from tqdm import tqdm
+import numpy as np
+import torch
+import pandas as pd
+from copy import deepcopy
+from tqdm import tqdm
+from pathlib import Path
 
 
 # ===== EscapeMapTorch with learnable total_beta =====
@@ -31,6 +39,7 @@ class EscapeMapTorch(nn.Module):
         self.ace2_vector = {"ace2": ace2_vector}
         self.rbm = rbm
         self.ln10 = math.log(10.0)
+        self.total_beta = float(total_beta)
 
         A = len(kd_vectors)
         rc = (
@@ -44,11 +53,6 @@ class EscapeMapTorch(nn.Module):
         rb = -2 if raw_beta is None else float(raw_beta)
         self.raw_ace2 = nn.Parameter(torch.tensor(ra, dtype=dtype, device=self.device))
         self.raw_beta = nn.Parameter(torch.tensor(rb, dtype=dtype, device=self.device))
-
-        # NEW: learnable total_beta (positive)
-        self.raw_total_beta = nn.Parameter(
-            torch.tensor(float(np.log(total_beta)), dtype=dtype, device=self.device)
-        )
 
     @staticmethod
     def _to_int16_c_contig(x):
@@ -75,7 +79,6 @@ class EscapeMapTorch(nn.Module):
         seqs_np = self._to_int16_c_contig(seqs_np)
 
         beta = torch.exp(self.raw_beta)
-        total_beta = torch.exp(self.raw_total_beta)  # positive
         ln10 = self.ln10
 
         kds_np = self._get_Kd_batch_numpy(seqs_np, self.kd_vectors, log10=True) * ln10
@@ -100,5 +103,22 @@ class EscapeMapTorch(nn.Module):
         energy = energy + softplus_stable(kdace2 - self.raw_ace2)
 
         fe = self._rbm_free_energy(seqs_np)
-        energy = (energy + beta * fe) * total_beta
+        energy = (energy + beta * fe) * self.total_beta
         return energy[0] if single else energy
+
+
+# i have a fata file fasta_file_path containing lines like
+# >2021-03-15|South America|P.3
+# SVYAWNRKRISNCVADYSVLYNSASFSTFKCYGVSPTKLNDLCFTNVYADSFVIRGDEVRQIAPGQTGKIADYNYKLPDDFTGCVIAWNSNNLDSKVGGNYNYLYRLFRKSNLKPFERDISTEIYQAGSTPCNGVKGFNCYFPLQSYGFQPTYGVGYQPYRVVVLSFELLHAPATVCG
+# >2020-06-04|South America|B.1
+# to laoad a sequence tensor, do         sequences = Proteins_utils.load_FASTA(fasta_file_path)
+# then, filter on seq that belong to the given period
+# to do: write the mcmc_sampling function
+# to do: correct and imporove the train_model function. The goal is to fit model on each pediod# then, save for each perdiod a csv like param_period_2020-11-06.csv containg the parmeters of the model in the form raw_beta,raw_ace2,raw_c_COV2-2050, ...
+# ab names like COV2-2050 are in the kd_vectors keys in the same order
+
+
+# --- Utilities ---------------------------------------------------------------
+
+
+# --- Training per period -----------------------------------------------------
