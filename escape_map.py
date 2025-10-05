@@ -44,7 +44,7 @@ class EscapeMap:
         total_beta=1,
     ):
         if raw_concentrations is None:
-            self.raw_concentrations = -12.0 * np.ones(len(kd_vectors), dtype=np.float64)
+            self.raw_concentrations = -9.0 * np.ones(len(kd_vectors), dtype=np.float64)
         else:
             assert len(raw_concentrations) == len(kd_vectors)
             self.raw_concentrations = np.array(raw_concentrations, dtype=np.float64)

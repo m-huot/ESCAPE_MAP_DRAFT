@@ -370,7 +370,7 @@ def main():
     parser.add_argument(
         "--out_dir",
         type=str,
-        default="params_by_period",
+        default="params_by_period9_0.02",
         help="Output folder for CSV parameter files",
     )
     parser.add_argument(
@@ -390,25 +390,25 @@ def main():
     )
 
     # Training hyperparameters
-    parser.add_argument("--epochs", type=int, default=200)
+    parser.add_argument("--epochs", type=int, default=300)
     parser.add_argument(
-        "--lr", type=float, default=0.03
-    )  # 0.02 for nb3. O.O25 for nb 2
-    parser.add_argument("--batch_size", type=int, default=10)
-    parser.add_argument("--gamma", type=float, default=0.98)  # 0.99 for nb 2 and 3
+        "--lr",
+        type=float,
+        default=0.03,  # 0.03 default
+    )
+    parser.add_argument("--batch_size", type=int, default=10)  # new
+    parser.add_argument("--gamma", type=float, default=0.99)
     parser.add_argument("--mcmc_warmup_steps", type=int, default=600)
-    parser.add_argument(
-        "--mcmc_steps_fast", type=int, default=30
-    )  # 50 for nb3 . 30 for nb2
+    parser.add_argument("--mcmc_steps_fast", type=int, default=100)
 
     # Model init overrides (optional)
     parser.add_argument(
         "--raw_ace2",
         type=float,
-        default=-8.0,  # -8
+        default=-7.0,  # -8
         help="ACE2 concentration in log10 space",
     )
-    parser.add_argument("--raw_beta", type=float, default=0.0, help="log(beta)")
+    parser.add_argument("--raw_beta", type=float, default=-1.0, help="log(beta)")
     parser.add_argument(
         "--total_beta", type=float, default=1.0, help="global scaling of energy"
     )

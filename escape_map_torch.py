@@ -43,7 +43,7 @@ class EscapeMapTorch(nn.Module):
 
         A = len(kd_vectors)
         rc = (
-            torch.full((A,), -10.0, dtype=dtype, device=self.device)
+            torch.full((A,), -8.0, dtype=dtype, device=self.device)
             if raw_concentrations is None
             else torch.as_tensor(raw_concentrations, dtype=dtype, device=self.device)
         )
