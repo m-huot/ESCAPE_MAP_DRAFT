@@ -87,7 +87,7 @@ class EscapeMapTorch(nn.Module):
         kdace2_np = (
             self._get_Kd_batch_numpy(seqs_np, self.ace2_vector, log10=True) * ln10
         )
-        kdace2_np = np.clip(np.squeeze(kdace2_np), -15.0, -5.0)
+        kdace2_np = np.squeeze(kdace2_np)
         kdace2 = torch.as_tensor(kdace2_np, dtype=self.dtype, device=self.device)
 
         conc = self.raw_concentrations * ln10
@@ -100,7 +100,7 @@ class EscapeMapTorch(nn.Module):
             return out
 
         energy = softplus_stable(-kds + conc).sum(dim=-1)
-        energy = energy + softplus_stable(kdace2 - self.raw_ace2)
+        energy = energy + softplus_stable(kdace2 - self.raw_ace2 * ln10)
 
         fe = self._rbm_free_energy(seqs_np)
         energy = (energy + beta * fe) * self.total_beta

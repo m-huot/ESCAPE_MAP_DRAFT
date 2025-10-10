@@ -83,7 +83,7 @@ class EscapeMap:
         # ACE2 Kd: (N,)
         kdace2 = _get_Kd_batch(seqs, self.ace2_vector, log10=True) * ln10
         kdace2 = np.squeeze(kdace2)
-        kdace2 = np.clip(kdace2, -15, -5)
+        # kdace2 = np.clip(kdace2, -15, -5)
 
         # Antibody energy: sum over antibodies
         conc = np.asarray(self.raw_concentrations, dtype=float) * ln10  # (A,)
@@ -91,7 +91,7 @@ class EscapeMap:
         energy = stable_logexp(logdiffs).sum(axis=-1)  # (N,)
 
         # ACE2 energy
-        ace2_energy = stable_logexp(kdace2 - self.raw_ace2)  # (N,)
+        ace2_energy = stable_logexp(kdace2 - self.raw_ace2 * ln10)  # (N,)
         energy = energy + ace2_energy
 
         # RBM free energy: rbm.free_energy returns (N,)
