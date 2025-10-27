@@ -26,6 +26,8 @@ END = 5
 kd_vectors_directory = EXP_DIR / "kd_vectors"
 new_kd_vectors_directory = EXP_DIR / "new_kd_vectors"
 ba1_kd_vectors_directory = EXP_DIR / "ba1_kd_vectors"
+wt_kd_vectors_directory = EXP_DIR / "wt_kd_vectors"
+
 ace2_vector_directory = EXP_DIR / "ace2_kd_vector" / "ace2_delta_log10kd.npy"
 
 
@@ -52,6 +54,7 @@ RBM = RBM_utils.loadRBM(str(FILE_DIR / "test_wt_RBM_Covid.data"))
 KD_VECTORS = load_kd_vectors(kd_vectors_directory)
 NEW_KD_VECTORS = load_kd_vectors(new_kd_vectors_directory)
 BA1_KD_VECTORS = load_kd_vectors(ba1_kd_vectors_directory)
+WT_KD_VECTORS = load_kd_vectors(wt_kd_vectors_directory)
 
 ACE2_KD_VECTOR = np.load(str(ace2_vector_directory))
 
