@@ -364,13 +364,13 @@ def main():
     parser.add_argument(
         "--fasta_file",
         type=str,
-        default="seq_data/ns_mutated_spike.fasta",
+        default="seq_data/ns_mutated_spike_100k.fasta",
         help="Input FASTA file with spike sequences",
     )
     parser.add_argument(
         "--out_dir",
         type=str,
-        default="params_by_period9_0.02",
+        default="params_by_period",
         help="Output folder for CSV parameter files",
     )
     parser.add_argument(
@@ -405,7 +405,7 @@ def main():
     parser.add_argument(
         "--raw_ace2",
         type=float,
-        default=-7.0,  # -8
+        default=-8.0,  # -8
         help="ACE2 concentration in log10 space",
     )
     parser.add_argument("--raw_beta", type=float, default=-1.0, help="log(beta)")
