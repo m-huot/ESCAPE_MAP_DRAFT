@@ -2,5 +2,4 @@ exp_data/*
 *.pyc
 *.tsv
 params*
-esmif/*
 generative/obsolete*
