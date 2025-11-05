@@ -1,6 +1,4 @@
-Epistasis/*
 exp_data/*
-*.csv
 *.pyc
 *.tsv
 params*
