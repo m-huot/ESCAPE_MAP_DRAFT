@@ -23,9 +23,9 @@ Raw pandemic data used in this study are available on [Zenodo](https://doi.org/1
 
 Clone PGM repository (https://github.com/jertubiana/PGM) inside main folder.
 
-To fit model on pandemic sequences in seq_data and create parameter file: run fit_model.py.
+To fit model on new pandemic sequences in seq_data/ and create new parameter file: run fit_model.py --fasta_file "seq_data/ns_mutated_spike_100k.fasta"
 
-
+To obtain paper results using parameters already fitted, run the notebooks in Figure folders.
 
 
 
