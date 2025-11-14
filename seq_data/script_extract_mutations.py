@@ -95,7 +95,7 @@ def main():
     )
     parser.add_argument(
         "--tsv",
-        default="ns_metadata.tsv",
+        default="metadata.tsv",
         help="Input TSV file (must contain 'aaSubstitutions' column).",
     )
     parser.add_argument(
